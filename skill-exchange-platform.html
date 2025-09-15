@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillFlow - Exchange Skills, Find Jobs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-duration: 25s;
+        }
+
+        .shape2 {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+
+        .shape3 {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 20%;
+            animation-duration: 35s;
+        }
+
+        .shape4 {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            right: 30%;
+            animation-duration: 28s;
+            animation-direction: reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+            100% { transform: translateY(0px) rotate(360deg); opacity: 0.7; }
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideInUp 1s ease-out;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            border-color: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Search Section */
+        .search-section {
+            margin-bottom: 3rem;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 3px solid #e0e7ff;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 25px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Filter Section */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-select {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #e0e7ff;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .filter-select:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-company {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .card-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .exchange-btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .exchange-btn:hover {
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Intent Analysis */
+        .intent-analysis {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .intent-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Skill Exchange Form */
+        .exchange-form {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-input {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .add-skill-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .add-skill-btn:hover {
+            background: #38a169;
+            transform: scale(1.05);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-item {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remove-skill {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tab-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .skill-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
+        <div class="floating-shape shape4"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">SkillFlow</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Exchange Skills, Find Opportunities</h1>
+            <p>Connect with professionals, learn new skills, and discover your dream job</p>
+        </section>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="jobs">Find Jobs</button>
+            <button class="tab-btn" data-tab="exchange">Skill Exchange</button>
+            <button class="tab-btn" data-tab="post">Post Opportunity</button>
+        </div>
+
+        <!-- Jobs Tab -->
+        <div id="jobs" class="tab-content active">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="jobSearch" placeholder="Search for jobs by title, company, or skills...">
+                    <button class="search-btn" onclick="searchJobs()">Search</button>
+                </div>
+            </div>
+
+            <div class="filters">
+                <select class="filter-select" id="jobType">
+                    <option value="">Job Type</option>
+                    <option value="full-time">Full Time</option>
+                    <option value="part-time">Part Time</option>
+                    <option value="contract">Contract</option>
+                    <option value="remote">Remote</option>
+                </select>
+                <select class="filter-select" id="experience">
+                    <option value="">Experience Level</option>
+                    <option value="entry">Entry Level</option>
+                    <option value="mid">Mid Level</option>
+                    <option value="senior">Senior Level</option>
+                </select>
+                <select class="filter-select" id="location">
+                    <option value="">Location</option>
+                    <option value="new-york">New York</option>
+                    <option value="san-francisco">San Francisco</option>
+                    <option value="london">London</option>
+                    <option value="remote">Remote</option>
+                </select>
+            </div>
+
+            <div class="intent-analysis">
+                <div class="intent-title">
+                    <span class="pulse">🎯</span>
+                    <span>AI Intent Analysis: Based on your search pattern, we recommend focusing on <strong>Frontend Development</strong> roles</span>
+                </div>
+            </div>
+
+            <div class="cards-grid" id="jobCards">
+                <!-- Jobs will be populated here -->
+            </div>
+        </div>
+
+        <!-- Skill Exchange Tab -->
+        <div id="exchange" class="tab-content">
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="skillSearch" placeholder="Search for skills to learn or exchange...">
+                    <button class="search-btn" onclick="searchSkills()">Search</button>
+                </div>
+            </div>
+
+            <div class="filters">
+                <select class="filter-select" id="skillCategory">
+                    <option value="">Skill Category</option>
+                    <option value="programming">Programming</option>
+                    <option value="design">Design</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="business">Business</option>
+                    <option value="languages">Languages</option>
+                </select>
+                <select class="filter-select" id="exchangeType">
+                    <option value="">Exchange Type</option>
+                    <option value="skill-for-skill">Skill for Skill</option>
+                    <option value="mentoring">Mentoring</option>
+                    <option value="project-based">Project Based</option>
+                </select>
+            </div>
+
+            <div class="intent-analysis">
+                <div class="intent-title">
+                    <span class="pulse">🧠</span>
+                    <span>Learning Recommendation: Users with similar profiles often exchange <strong>JavaScript</strong> for <strong>UI/UX Design</strong></span>
+                </div>
+            </div>
+
+            <div class="cards-grid" id="skillCards">
+                <!-- Skills will be populated here -->
+            </div>
+        </div>
+
+        <!-- Post Opportunity Tab -->
+        <div id="post" class="tab-content">
+            <div class="exchange-form">
+                <h2 style="margin-bottom: 2rem; color: #2d3748;">Post New Opportunity</h2>
+                
+                <div class="form-group">
+                    <label>Opportunity Type</label>
+                    <select id="opportunityType" onchange="togglePostType()">
+                        <option value="job">Job Posting</option>
+                        <option value="skill-exchange">Skill Exchange</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="postTitle" placeholder="Enter job title or skill exchange title">
+                </div>
+
+                <div class="form-group">
+                    <label>Company/Your Name</label>
+                    <input type="text" id="postCompany" placeholder="Company name or your name">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="postDescription" rows="4" placeholder="Describe the opportunity or what you're offering/looking for"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Required Skills</label>
+                    <div class="skill-input">
+                        <input type="text" id="skillInput" placeholder="Add a skill">
+                        <button type="button" class="add-skill-btn" onclick="addSkill()">Add Skill</button>
+                    </div>
+                    <div class="skills-list" id="skillsList"></div>
+                </div>
+
+                <div class="form-group" id="jobSpecific">
+                    <label>Location</label>
+                    <input type="text" id="postLocation" placeholder="Job location or Remote">
+                </div>
+
+                <div class="form-group" id="exchangeSpecific" style="display: none;">
+                    <label>Skills You're Offering</label>
+                    <div class="skill-input">
+                        <input type="text" id="offeringSkillInput" placeholder="Skill you can teach">
+                        <button type="button" class="add-skill-btn" onclick="addOfferingSkill()">Add</button>
+                    </div>
+                    <div class="skills-list" id="offeringSkillsList"></div>
+                </div>
+
+                <button class="card-btn" onclick="submitPost()" style="width: 100%; margin-top: 1rem; font-size: 1.1rem; padding: 1rem;">
+                    Post Opportunity
+                </button>
+            </div>
+
+            <div class="intent-analysis">
+                <div class="intent-title">
+                    <span class="pulse">💡</span>
+                    <span>Posting Tip: Include specific skills and clear descriptions to attract the right candidates or exchange partners</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const jobsData = [
+            {
+                title: "Frontend Developer",
+                company: "TechCorp Inc.",
+                location: "San Francisco, CA",
+                type: "Full Time",
+                experience: "Mid Level",
+                skills: ["React", "JavaScript", "CSS"],
+                description: "Join our dynamic team to build cutting-edge web applications using modern frontend technologies.",
+                salary: "$80k - $120k"
+            },
+            {
+                title: "UX Designer",
+                company: "Design Studio",
+                location: "Remote",
+                type: "Contract",
+                experience: "Senior Level",
+                skills: ["Figma", "User Research", "Prototyping"],
+                description: "Create intuitive and beautiful user experiences for our clients' digital products.",
+                salary: "$70k - $100k"
+            },
+            {
+                title: "Full Stack Developer",
+                company: "StartupXYZ",
+                location: "New York, NY",
+                type: "Full Time",
+                experience: "Entry Level",
+                skills: ["Node.js", "MongoDB", "React"],
+                description: "Build end-to-end web applications in a fast-paced startup environment.",
+                salary: "$60k - $90k"
+            },
+            {
+                title: "Data Scientist",
+                company: "Analytics Pro",
+                location: "London, UK",
+                type: "Full Time",
+                experience: "Mid Level",
+                skills: ["Python", "Machine Learning", "SQL"],
+                description: "Analyze complex data sets and build predictive models to drive business decisions.",
+                salary: "£50k - £75k"
+            }
+        ];
+
+        const skillsData = [
+            {
+                title: "Learn React.js",
+                person: "Sarah Chen",
+                offering: ["Python", "Data Analysis"],
+                seeking: ["React", "Frontend Development"],
+                type: "Skill Exchange",
+                description: "Experienced data scientist looking to learn frontend development. Can teach Python and data analysis techniques.",
+                rating: 4.9
+            },
+            {
+                title: "UI/UX Design Mentoring",
+                person: "Mike Johnson",
+                offering: ["UI Design", "Figma", "User Research"],
+                seeking: ["JavaScript", "Web Development"],
+                type: "Mentoring",
+                description: "Senior UX designer with 8 years of experience. Happy to mentor in exchange for coding lessons.",
+                rating: 4.8
+            },
+            {
+                title: "Language Exchange: Spanish ↔ Programming",
+                person: "Carlos Rodriguez",
+                offering: ["Spanish", "Marketing"],
+                seeking: ["Java", "Spring Boot"],
+                type: "Skill Exchange",
+                description: "Native Spanish speaker and marketing professional looking to transition into backend development.",
+                rating: 4.7
+            },
+            {
+                title: "Photography for Web Development",
+                person: "Emma Wilson",
+                offering: ["Photography", "Adobe Creative Suite"],
+                seeking: ["CSS", "Responsive Design"],
+                type: "Project Based",
+                description: "Professional photographer wanting to build her own portfolio website. Can provide photography services.",
+                rating: 4.9
+            }
+        ];
+
+        let currentJobs = jobsData;
+        let currentSkills = skillsData;
+        let userSkills = [];
+        let offeringSkills = [];
+
+        // Tab functionality
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                
+                // Update active tab button
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update active tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+                
+                // Load appropriate data
+                if (tabId === 'jobs') {
+                    displayJobs(currentJobs);
+                } else if (tabId === 'exchange') {
+                    displaySkills(currentSkills);
+                }
+            });
+        });
+
+        // Display jobs
+        function displayJobs(jobs) {
+            const container = document.getElementById('jobCards');
+            container.innerHTML = jobs.map(job => `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">${job.title}</div>
+                            <div class="card-company">${job.company}</div>
+                        </div>
+                        <div style="text-align: right; color: #48bb78; font-weight: 600;">
+                            ${job.salary}
+                        </div>
+                    </div>
+                    <div class="card-tags">
+                        ${job.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                    </div>
+                    <div class="card-description">${job.description}</div>
+                    <div class="card-footer">
+                        <div style="color: #666;">
+                            📍 ${job.location} • ${job.type} • ${job.experience}
+                        </div>
+                        <button class="card-btn" onclick="applyJob('${job.title}')">Apply Now</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Display skills
+        function displaySkills(skills) {
+            const container = document.getElementById('skillCards');
+            container.innerHTML = skills.map(skill => `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">${skill.title}</div>
+                            <div class="card-company">${skill.person}</div>
+                        </div>
+                        <div style="text-align: right; color: #f093fb; font-weight: 600;">
+                            ⭐ ${skill.rating}
+                        </div>
+                    </div>
+                    <div style="margin: 1rem 0;">
+                        <div style="margin-bottom: 0.5rem; font-weight: 600; color: #48bb78;">Offering:</div>
+                        <div class="card-tags">
+                            ${skill.offering.map(s => `<span class="tag" style="background: #48bb78;">${s}</span>`).join('')}
+                        </div>
+                        <div style="margin: 0.5rem 0; font-weight: 600; color: #667eea;">Seeking:</div>
+                        <div class="card-tags">
+                            ${skill.seeking.map(s => `<span class="tag">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="card-description">${skill.description}</div>
+                    <div class="card-footer">
+                        <div style="color: #666;">
+                            ${skill.type}
+                        </div>
+                        <button class="card-btn exchange-btn" onclick="connectExchange('${skill.person}')">Connect</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        function searchJobs() {
+            const query = document.getElementById('jobSearch').value.toLowerCase();
+            const jobType = document.getElementById('jobType').value;
+            const experience = document.getElementById('experience').value;
+            const location = document.getElementById('location').value;
+
+            let filtered = jobsData.filter(job => {
+                const matchesQuery = job.title.toLowerCase().includes(query) ||
+                                   job.company.toLowerCase().includes(query) ||
+                                   job.skills.some(skill => skill.toLowerCase().includes(query));
+                
+                const matchesType = !jobType || job.type.toLowerCase().replace(' ', '-') === jobType;
+                const matchesExperience = !experience || job.experience.toLowerCase().replace(' ', '') === experience;
+                const matchesLocation = !location || job.location.toLowerCase().includes(location.replace('-', ' '));
+
+                return matchesQuery && matchesType && matchesExperience && matchesLocation;
+            });
+
+            currentJobs = filtered;
+            displayJobs(filtered);
+
+            // Update intent analysis
+            updateJobIntent(query, filtered.length);
+        }
+
+        function searchSkills() {
+            const query = document.getElementById('skillSearch').value.toLowerCase();
+            const category = document.getElementById('skillCategory').value;
+            const exchangeType = document.getElementById('exchangeType').value;
+
+            let filtered = skillsData.filter(skill => {
+                const matchesQuery = skill.title.toLowerCase().includes(query) ||
+                                   skill.offering.some(s => s.toLowerCase().includes(query)) ||
+                                   skill.seeking.some(s => s.toLowerCase().includes(query));
+                
+                const matchesType = !exchangeType || skill.type.toLowerCase().replace(' ', '-') === exchangeType;
+
+                return matchesQuery && matchesType;
+            });
+
+            currentSkills = filtered;
+            displaySkills(filtered);
+
+            // Update intent analysis
+            updateSkillIntent(query, filtered.length);
+        }
+
+        // Intent analysis updates
+        function updateJobIntent(query, resultsCount) {
+            const intentDiv = document.querySelector('#jobs .intent-analysis .intent-title span:last-child');
+            if (query) {
+                intentDiv.innerHTML = `AI Intent Analysis: Found ${resultsCount} matches for "${query}". Consider expanding your search to related skills like <strong>TypeScript</strong> or <strong>Vue.js</strong>`;
+            } else {
+                intentDiv.innerHTML = `AI Intent Analysis: Based on your search pattern, we recommend focusing on <strong>Frontend Development</strong> roles`;
+            }
+        }
+
+        function updateSkillIntent(query, resultsCount) {
+            const intentDiv = document.querySelector('#exchange .intent-analysis .intent-title span:last-child');
+            if (query) {
+                intentDiv.innerHTML = `Learning Recommendation: Found ${resultsCount} exchange opportunities for "${query}". Most successful exchanges involve <strong>complementary skills</strong>`;
+            } else {
+                intentDiv.innerHTML = `Learning Recommendation: Users with similar profiles often exchange <strong>JavaScript</strong> for <strong>UI/UX Design</strong>`;
+            }
+        }
+
+        // Skill management for posting
+        function addSkill() {
+            const input = document.getElementById('skillInput');
+            const skill = input.value.trim();
+            
+            if (skill && !userSkills.includes(skill)) {
+                userSkills.push(skill);
+                updateSkillsList();
+                input.value = '';
+            }
+        }
+
+        function addOfferingSkill() {
+            const input = document.getElementById('offeringSkillInput');
+            const skill = input.value.trim();
+            
+            if (skill && !offeringSkills.includes(skill)) {
+                offeringSkills.push(skill);
+                updateOfferingSkillsList();
+                input.value = '';
+            }
+        }
+
+        function updateSkillsList() {
+            const container = document.getElementById('skillsList');
+            container.innerHTML = userSkills.map((skill, index) => `
+                <span class="skill-item">
+                    ${skill}
+                    <button class="remove-skill" onclick="removeSkill(${index})">×</button>
+                </span>
+            `).join('');
+        }
+
+        function updateOfferingSkillsList() {
+            const container = document.getElementById('offeringSkillsList');
+            container.innerHTML = offeringSkills.map((skill, index) => `
+                <span class="skill-item">
+                    ${skill}
+                    <button class="remove-skill" onclick="removeOfferingSkill(${index})">×</button>
+                </span>
+            `).join('');
+        }
+
+        function removeSkill(index) {
+            userSkills.splice(index, 1);
+            updateSkillsList();
+        }
+
+        function removeOfferingSkill(index) {
+            offeringSkills.splice(index, 1);
+            updateOfferingSkillsList();
+        }
+
+        // Toggle post type
+        function togglePostType() {
+            const type = document.getElementById('opportunityType').value;
+            const jobSpecific = document.getElementById('jobSpecific');
+            const exchangeSpecific = document.getElementById('exchangeSpecific');
+            
+            if (type === 'skill-exchange') {
+                jobSpecific.style.display = 'none';
+                exchangeSpecific.style.display = 'block';
+            } else {
+                jobSpecific.style.display = 'block';
+                exchangeSpecific.style.display = 'none';
+            }
+        }
+
+        // Submit post
+        function submitPost() {
+            const type = document.getElementById('opportunityType').value;
+            const title = document.getElementById('postTitle').value;
+            const company = document.getElementById('postCompany').value;
+            const description = document.getElementById('postDescription').value;
+            const location = document.getElementById('postLocation').value;
+
+            if (!title || !company || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Simulate posting with loading animation
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span> Posting...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                if (type === 'job') {
+                    const newJob = {
+                        title,
+                        company,
+                        location: location || 'Remote',
+                        type: 'Full Time',
+                        experience: 'Mid Level',
+                        skills: [...userSkills],
+                        description,
+                        salary: 'Competitive'
+                    };
+                    jobsData.unshift(newJob);
+                    alert('Job posted successfully!');
+                } else {
+                    const newSkill = {
+                        title,
+                        person: company,
+                        offering: [...offeringSkills],
+                        seeking: [...userSkills],
+                        type: 'Skill Exchange',
+                        description,
+                        rating: 5.0
+                    };
+                    skillsData.unshift(newSkill);
+                    alert('Skill exchange posted successfully!');
+                }
+
+                // Reset form
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postCompany').value = '';
+                document.getElementById('postDescription').value = '';
+                document.getElementById('postLocation').value = '';
+                userSkills = [];
+                offeringSkills = [];
+                updateSkillsList();
+                updateOfferingSkillsList();
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        // Action handlers
+        function applyJob(jobTitle) {
+            alert(`Application submitted for ${jobTitle}! We'll notify you when the employer responds.`);
+        }
+
+        function connectExchange(person) {
+            alert(`Connection request sent to ${person}! They'll receive a notification to start the skill exchange.`);
+        }
+
+        // Enter key support for search
+        document.getElementById('jobSearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchJobs();
+        });
+
+        document.getElementById('skillSearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchSkills();
+        });
+
+        document.getElementById('skillInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addSkill();
+        });
+
+        document.getElementById('offeringSkillInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addOfferingSkill();
+        });
+
+        // Filter change handlers
+        document.getElementById('jobType').addEventListener('change', searchJobs);
+        document.getElementById('experience').addEventListener('change', searchJobs);
+        document.getElementById('location').addEventListener('change', searchJobs);
+        document.getElementById('skillCategory').addEventListener('change', searchSkills);
+        document.getElementById('exchangeType').addEventListener('change', searchSkills);
+
+        // Initialize the page
+        displayJobs(jobsData);
+        
+        // Add some dynamic intent updates
+        setInterval(() => {
+            const intentElements = document.querySelectorAll('.pulse');
+            intentElements.forEach(el => {
+                const emojis = ['🎯', '🧠', '💡', '🚀', '✨', '🔍'];
+                el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            });
+        }, 5000);
+
+        // Simulate real-time updates
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const notifications = [
+                    'New job matching your skills posted!',
+                    'Someone wants to exchange skills with you!',
+                    'Your application was viewed by an employer.',
+                    'New skill exchange opportunity in your area!'
+                ];
+                
+                const notification = notifications[Math.floor(Math.random() * notifications.length)];
+                
+                // Create a temporary notification
+                const notificationEl = document.createElement('div');
+                notificationEl.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    z-index: 1000;
+                    animation: slideInRight 0.5s ease-out;
+                    max-width: 300px;
+                `;
+                notificationEl.innerHTML = `
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">🔔 Notification</div>
+                    <div>${notification}</div>
+                `;
+                
+                document.body.appendChild(notificationEl);
+                
+                setTimeout(() => {
+                    notificationEl.style.animation = 'slideOutRight 0.5s ease-out forwards';
+                    setTimeout(() => notificationEl.remove(), 500);
+                }, 4000);
+            }
+        }, 15000);
+
+        // Add CSS for notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
